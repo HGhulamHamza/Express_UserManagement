@@ -25,10 +25,16 @@ app.get('/api/users', (req, res) => {
 
 // Add User POST Route
 app.post('/api/users', (req, res) => {
-    const body = req.body;
+    const { name, email } = req.body;
+
+    if (!name || !email) {
+        return res.status(400).json({ message: 'Name and email are required!' });
+    }
+
     const newUser = {
         id: users.length + 1,
-        ...body,
+        name,
+        email,
     };
 
     users.push(newUser);
