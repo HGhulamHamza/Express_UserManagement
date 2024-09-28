@@ -9,6 +9,8 @@ function App() {
   const [users, setUsers] = useState([]);
   const [newUser, setNewUser] = useState({ name: '', email: '' });
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [editMode, setEditMode] = useState(false);
+  const [currentUserId, setCurrentUserId] = useState(null);
 
   useEffect(() => {
     fetchUsers();
@@ -19,17 +21,32 @@ function App() {
     setUsers(response.data.data);
   }
 
-  const handleDialogOpen = () => {
+  const handleDialogOpen = (user) => {
     setDialogOpen(true);
+    if (user) {
+      setEditMode(true);
+      setCurrentUserId(user.id);
+      setNewUser({ name: user.name, email: user.email });
+    } else {
+      setEditMode(false);
+      setNewUser({ name: '', email: '' });
+    }
   };
 
   const handleDialogClose = () => {
     setDialogOpen(false);
     setNewUser({ name: '', email: '' });
+    setEditMode(false);
   };
 
   const handleAddUser = async () => {
     await axios.post(API_URL, newUser);
+    fetchUsers();
+    handleDialogClose();
+  };
+
+  const handleUpdateUser = async () => {
+    await axios.put(`${API_URL}/${currentUserId}`, newUser);
     fetchUsers();
     handleDialogClose();
   };
@@ -42,12 +59,12 @@ function App() {
   return (
     <div className="app-container">
       <h1>User Management</h1>
-      <Button variant="contained" color="primary" onClick={handleDialogOpen}>
+      <Button variant="contained" color="primary" onClick={() => handleDialogOpen()}>
         Add New User
       </Button>
 
       <Dialog open={dialogOpen} onClose={handleDialogClose}>
-        <DialogTitle>Add New User</DialogTitle>
+        <DialogTitle>{editMode ? 'Edit User' : 'Add New User'}</DialogTitle>
         <DialogContent>
           <TextField
             autoFocus
@@ -69,7 +86,9 @@ function App() {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleDialogClose}>Cancel</Button>
-          <Button onClick={handleAddUser}>Add User</Button>
+          <Button onClick={editMode ? handleUpdateUser : handleAddUser}>
+            {editMode ? 'Update User' : 'Add User'}
+          </Button>
         </DialogActions>
       </Dialog>
 
@@ -88,6 +107,9 @@ function App() {
                 <td>{user.name}</td>
                 <td>{user.email}</td>
                 <td>
+                  <Button color="primary" onClick={() => handleDialogOpen(user)}>
+                    Edit
+                  </Button>
                   <Button color="secondary" onClick={() => handleDeleteUser(user.id)}>
                     Delete
                   </Button>
