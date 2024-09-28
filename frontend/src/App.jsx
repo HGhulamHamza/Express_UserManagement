@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import './App.css';
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField } from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, Snackbar, Alert } from '@mui/material';
 
 const API_URL = 'http://localhost:3000/api/users';
 
@@ -11,6 +11,9 @@ function App() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [currentUserId, setCurrentUserId] = useState(null);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarSeverity, setSnackbarSeverity] = useState('success');
 
   useEffect(() => {
     fetchUsers();
@@ -39,21 +42,46 @@ function App() {
     setEditMode(false);
   };
 
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
+  };
+
+  const showSnackbar = (message, severity) => {
+    setSnackbarMessage(message);
+    setSnackbarSeverity(severity);
+    setSnackbarOpen(true);
+  };
+
   const handleAddUser = async () => {
-    await axios.post(API_URL, newUser);
-    fetchUsers();
-    handleDialogClose();
+    try {
+      await axios.post(API_URL, newUser);
+      fetchUsers();
+      handleDialogClose();
+      showSnackbar('User added successfully!', 'success');
+    } catch (error) {
+      showSnackbar(error.response.data.message, 'error');
+    }
   };
 
   const handleUpdateUser = async () => {
-    await axios.put(`${API_URL}/${currentUserId}`, newUser);
-    fetchUsers();
-    handleDialogClose();
+    try {
+      await axios.put(`${API_URL}/${currentUserId}`, newUser);
+      fetchUsers();
+      handleDialogClose();
+      showSnackbar('User updated successfully!', 'success');
+    } catch (error) {
+      showSnackbar(error.response.data.message, 'error');
+    }
   };
 
   const handleDeleteUser = async (id) => {
-    await axios.delete(`${API_URL}/${id}`);
-    fetchUsers();
+    try {
+      await axios.delete(`${API_URL}/${id}`);
+      fetchUsers();
+      showSnackbar('User deleted successfully!', 'success');
+    } catch (error) {
+      showSnackbar(error.response.data.message, 'error');
+    }
   };
 
   return (
@@ -119,6 +147,12 @@ function App() {
           </tbody>
         </table>
       </div>
+
+      <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleSnackbarClose}>
+        <Alert onClose={handleSnackbarClose} severity={snackbarSeverity}>
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </div>
   );
 }
