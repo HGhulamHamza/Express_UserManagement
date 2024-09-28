@@ -34,6 +34,11 @@ function App() {
     handleDialogClose();
   };
 
+  const handleDeleteUser = async (id) => {
+    await axios.delete(`${API_URL}/${id}`);
+    fetchUsers();
+  };
+
   return (
     <div className="app-container">
       <h1>User Management</h1>
@@ -74,6 +79,7 @@ function App() {
             <tr>
               <th>Name</th>
               <th>Email</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -81,6 +87,11 @@ function App() {
               <tr key={user.id}>
                 <td>{user.name}</td>
                 <td>{user.email}</td>
+                <td>
+                  <Button color="secondary" onClick={() => handleDeleteUser(user.id)}>
+                    Delete
+                  </Button>
+                </td>
               </tr>
             ))}
           </tbody>

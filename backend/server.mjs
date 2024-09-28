@@ -41,6 +41,19 @@ app.post('/api/users', (req, res) => {
     res.status(201).json({ message: 'New user created!', data: newUser });
 });
 
+// Delete User DELETE Route
+app.delete('/api/users/:id', (req, res) => {
+    const { id } = req.params;
+    const userIndex = users.findIndex(user => user.id === parseInt(id));
+
+    if (userIndex === -1) {
+        return res.status(404).json({ message: 'User not found!' });
+    }
+
+    users.splice(userIndex, 1);
+    res.status(200).json({ message: 'User deleted successfully!' });
+});
+
 app.use(errorHandler);
 
 app.listen(PORT, () => {
