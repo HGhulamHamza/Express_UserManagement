@@ -1,8 +1,10 @@
 body {
   font-family: Arial, sans-serif;
+  margin-top: 160px;
 }
 
 .app-container {
+
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;

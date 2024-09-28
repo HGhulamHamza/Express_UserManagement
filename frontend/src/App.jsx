@@ -100,15 +100,7 @@ function App() {
   return (
     <div className="app-container">
       <h1>User Management</h1>
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={() => handleDialogOpen()}
-        startIcon={<AddIcon />}
-        style={{ marginBottom: '20px' }}
-      >
-        Add New User
-      </Button>
+     
 
       <Dialog open={dialogOpen} onClose={handleDialogClose}>
         <DialogTitle>{editMode ? 'Edit User' : 'Add New User'}</DialogTitle>
@@ -172,6 +164,15 @@ function App() {
           {snackbarMessage}
         </Alert>
       </Snackbar>
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={() => handleDialogOpen()}
+        startIcon={<AddIcon />}
+        style={{ marginTop: '40px' }}
+      >
+        Add New User
+      </Button>
     </div>
   );
 }
