@@ -1,7 +1,20 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import './App.css';
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, Snackbar, Alert } from '@mui/material';
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+  TextField,
+  Snackbar,
+  Alert,
+  IconButton,
+} from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import AddIcon from '@mui/icons-material/Add';
 
 const API_URL = 'http://localhost:3000/api/users';
 
@@ -87,7 +100,13 @@ function App() {
   return (
     <div className="app-container">
       <h1>User Management</h1>
-      <Button variant="contained" color="primary" onClick={() => handleDialogOpen()}>
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={() => handleDialogOpen()}
+        startIcon={<AddIcon />}
+        style={{ marginBottom: '20px' }}
+      >
         Add New User
       </Button>
 
@@ -135,12 +154,12 @@ function App() {
                 <td>{user.name}</td>
                 <td>{user.email}</td>
                 <td>
-                  <Button color="primary" onClick={() => handleDialogOpen(user)}>
-                    Edit
-                  </Button>
-                  <Button color="secondary" onClick={() => handleDeleteUser(user.id)}>
-                    Delete
-                  </Button>
+                  <IconButton color="primary" onClick={() => handleDialogOpen(user)}>
+                    <EditIcon />
+                  </IconButton>
+                  <IconButton color="secondary" onClick={() => handleDeleteUser(user.id)}>
+                    <DeleteIcon />
+                  </IconButton>
                 </td>
               </tr>
             ))}
