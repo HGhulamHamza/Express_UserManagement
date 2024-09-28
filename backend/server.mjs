@@ -41,6 +41,21 @@ app.post('/api/users', (req, res) => {
     res.status(201).json({ message: 'New user created!', data: newUser });
 });
 
+// Update User PUT Route
+app.put('/api/users/:id', (req, res) => {
+    const { id } = req.params;
+    const { name, email } = req.body;
+
+    const userIndex = users.findIndex(user => user.id === parseInt(id));
+
+    if (userIndex === -1) {
+        return res.status(404).json({ message: 'User not found!' });
+    }
+
+    users[userIndex] = { id: parseInt(id), name, email };
+    res.status(200).json({ message: 'User updated successfully!', data: users[userIndex] });
+});
+
 // Delete User DELETE Route
 app.delete('/api/users/:id', (req, res) => {
     const { id } = req.params;
