@@ -35,9 +35,11 @@ function App() {
   };
 
   return (
-    <div>
+    <div className="app-container">
       <h1>User Management</h1>
-      <Button onClick={handleDialogOpen}>Add New User</Button>
+      <Button variant="contained" color="primary" onClick={handleDialogOpen}>
+        Add New User
+      </Button>
 
       <Dialog open={dialogOpen} onClose={handleDialogClose}>
         <DialogTitle>Add New User</DialogTitle>
@@ -66,7 +68,7 @@ function App() {
         </DialogActions>
       </Dialog>
 
-      <div>
+      <div className="table-container">
         <table>
           <thead>
             <tr>

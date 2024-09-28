@@ -2,14 +2,25 @@ body {
   font-family: Arial, sans-serif;
 }
 
+.app-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
 h1 {
   text-align: center;
+}
+
+.table-container {
+  margin-top: 20px;
+  overflow-x: auto;
 }
 
 table {
   margin: auto;
   border-collapse: collapse;
-  width: 80%;
+  width: 100%;
 }
 
 th, td {
