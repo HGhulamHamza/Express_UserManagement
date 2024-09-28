@@ -1,4 +1,3 @@
-// Backend: server.js
 import express from 'express';
 import cors from 'cors';
 
@@ -22,6 +21,18 @@ function errorHandler(err, req, res, next) {
 
 app.get('/api/users', (req, res) => {
     res.status(200).json({ message: 'Get all users!', data: users });
+});
+
+// Add User POST Route
+app.post('/api/users', (req, res) => {
+    const body = req.body;
+    const newUser = {
+        id: users.length + 1,
+        ...body,
+    };
+
+    users.push(newUser);
+    res.status(201).json({ message: 'New user created!', data: newUser });
 });
 
 app.use(errorHandler);
